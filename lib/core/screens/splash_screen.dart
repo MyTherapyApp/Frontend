@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_therapy/auth/screens/role_selection/role_selection_screen.dart';
+import 'package:my_therapy/auth/screens/role_selection_screen.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

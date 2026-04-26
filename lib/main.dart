@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_therapy/core/presentation/splash/splash_screen.dart';
+import 'package:my_therapy/core/screens/splash_screen.dart';
+import 'package:my_therapy/core/theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
     debugShowCheckedModeBanner: false,
+    theme: AppTheme.lightTheme,
     home: SplashScreen(),
     );
   }
