@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_therapy/features/auth/screens/login_screen.dart';
 import 'package:my_therapy/common/widgets/primary_button.dart';
 import 'package:my_therapy/features/auth/screens/patient_signup_screen.dart';
 import 'package:my_therapy/features/auth/screens/therapist_signup_screen.dart';
