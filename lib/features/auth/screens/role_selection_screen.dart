@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_therapy/features/auth/screens/login_screen.dart';
 import 'package:my_therapy/common/widgets/primary_button.dart';
-import 'package:my_therapy/patient/screens/patient_login_screen.dart';
-import 'package:my_therapy/therapist/screens/therapist_login_screen.dart';
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
 
@@ -73,7 +72,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     /// Navigate Therapist Login
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TherapistLoginScreen()),
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                   },
                 ),
@@ -89,7 +88,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     /// Navigate Patient Login
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PatientLoginScreen()),
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                   },
                 ),
