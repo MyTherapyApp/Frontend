@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_therapy/common/theme/app_colors.dart';
 
+import '../../../common/enums/user_role.dart';
 import '../../../common/helpers/validators.dart';
 import '../../../common/widgets/custom_appBar.dart';
 import '../../../common/widgets/custom_text_button.dart';
@@ -8,7 +9,8 @@ import '../../../common/widgets/custom_text_field.dart';
 import '../../../common/widgets/dismiss_keyboard.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+  final UserRole role;
+  const ResetPasswordScreen({super.key,required this.role,});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
