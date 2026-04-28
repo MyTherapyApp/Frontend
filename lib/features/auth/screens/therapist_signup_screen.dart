@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_therapy/common/enums/user_role.dart';
 import 'package:my_therapy/common/theme/app_colors.dart';
 import 'package:my_therapy/features/auth/screens/login_screen.dart';
 
 import '../../../common/helpers/validators.dart';
+import '../../../common/screens/main_screen.dart';
 import '../../../common/widgets/custom_appBar.dart';
 import '../../../common/widgets/custom_text_button.dart';
 import '../../../common/widgets/custom_text_field.dart';
@@ -46,10 +48,17 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
 
   void signUp() {
     FocusScope.of(context).unfocus();
-
     if (_formKey.currentState!.validate()) {
-      /// signup logic
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainScreen(
+            role: UserRole.therapist,
+          ),
+        ),
+      );
     }
+
   }
 
   Future<void> _pickLicence() async {
@@ -220,7 +229,7 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const LoginScreen(),
+                              builder: (_) => const LoginScreen(role: UserRole.therapist,),
                             ),
                           );
                         },
