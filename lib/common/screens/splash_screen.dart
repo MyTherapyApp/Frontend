@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_therapy/features/auth/screens/role_selection_screen.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:my_therapy/features/auth/screens/onboarding_screen.dart';
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -10,7 +11,7 @@ class SplashScreen extends StatelessWidget {
       duration: Duration(milliseconds: 6000), 
       backgroundColor: Colors.white,
       splashScreenBody: const _SplashContent(),
-      nextScreen: RoleSelectionScreen(), 
+      nextScreen: const OnboardingScreen(),
     );
   }
 }
