@@ -14,6 +14,10 @@ class AppColors {
   static const Color inputText = Colors.black;
   static const Color focusedBorder = primary;
 
+  static const Color navBackground = Color(0xFFEBF4FB);
+  static const Color navUnselected = Color(0xFF666666);
+
+
 
   // static const Color black = Color(0xFF222222);
 

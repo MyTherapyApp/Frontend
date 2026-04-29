@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_therapy/common/enums/user_role.dart';
 import 'package:my_therapy/common/theme/app_colors.dart';
 import 'package:my_therapy/features/auth/screens/login_screen.dart';
 
 import '../../../common/helpers/validators.dart';
+import '../../../common/screens/main_screen.dart';
 import '../../../common/widgets/custom_appBar.dart';
 import '../../../common/widgets/custom_text_button.dart';
 import '../../../common/widgets/custom_text_field.dart';
@@ -37,9 +39,15 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
 
   void signup() {
     FocusScope.of(context).unfocus();
-
     if (_formKey.currentState!.validate()) {
-      /// signup logic
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainScreen(
+            role: UserRole.patient,
+          ),
+        ),
+      );
     }
   }
 
@@ -191,7 +199,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const LoginScreen(),
+                                  const LoginScreen(role: UserRole.patient,),
                             ),
                           );
                         },

@@ -3,7 +3,9 @@ import 'package:my_therapy/common/theme/app_colors.dart';
 import 'package:my_therapy/features/auth/screens/reset_password_screen.dart';
 import 'package:my_therapy/features/auth/screens/role_selection_screen.dart';
 
+import '../../../common/enums/user_role.dart';
 import '../../../common/helpers/validators.dart';
+import '../../../common/screens/main_screen.dart';
 import '../../../common/widgets/custom_appBar.dart';
 import '../../../common/widgets/custom_text_button.dart';
 import '../../../common/widgets/custom_text_field.dart';
@@ -12,7 +14,9 @@ import '../../../common/widgets/primary_button.dart';
 
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final UserRole role;
+  const LoginScreen({super.key,
+  required this.role,});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -26,6 +30,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool rememberMe = false;
 
+  void login() {
+    if (_formKey.currentState!.validate()) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainScreen(
+            role: widget.role,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   void dispose() {
     emailController.dispose();
@@ -33,11 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void login() {
-    if (_formKey.currentState!.validate()) {
-      /// login logic
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
+                            MaterialPageRoute(builder: (context) => ResetPasswordScreen(role: widget.role,)),
                           );
                         },
                       ),
