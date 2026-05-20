@@ -17,6 +17,9 @@ class AppColors {
   static const Color navBackground = Color(0xFFEBF4FB);
   static const Color navUnselected = Color(0xFF666666);
 
+    static const Color logoutBtn = Color(0xFFF4060E);
+
+
 
 
   // static const Color black = Color(0xFF222222);
