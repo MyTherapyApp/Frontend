@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/widgets/custom_appBar.dart';
+import '../../../common/widgets/custom_appbar.dart';
 import '../../../common/widgets/logout_button.dart';
 import '../../../common/widgets/profile_menu_item.dart';
 import '../helpers/therapist_profile_menu.dart';

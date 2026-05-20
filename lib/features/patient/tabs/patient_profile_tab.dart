@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../common/helpers/current_user.dart';
-import '../../../common/widgets/custom_appBar.dart';
+import '../../../common/widgets/custom_appbar.dart';
 import '../../../common/widgets/logout_button.dart';
 import '../../../common/widgets/profile_header.dart';
 import '../../../common/widgets/profile_menu_item.dart';

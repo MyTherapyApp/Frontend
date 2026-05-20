@@ -6,7 +6,7 @@ import 'package:my_therapy/features/auth/screens/role_selection_screen.dart';
 import '../../../common/enums/user_role.dart';
 import '../../../common/helpers/validators.dart';
 import '../../../common/screens/main_screen.dart';
-import '../../../common/widgets/custom_appBar.dart';
+import '../../../common/widgets/custom_appbar.dart';
 import '../../../common/widgets/custom_text_button.dart';
 import '../../../common/widgets/custom_text_field.dart';
 import '../../../common/widgets/dismiss_keyboard.dart';
