@@ -5,12 +5,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showBackArrow;
   final VoidCallback? onBackPressed;
+  final Widget? action;
 
   const CustomAppBar({
     super.key,
     required this.title,
     this.showBackArrow = false,
     this.onBackPressed,
+    this.action
   });
 
   @override
@@ -36,6 +38,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: Colors.black,
               ),
             )
+          : null,
+          actions: action != null
+            ? [
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: action,
+              ),
+            ]
           : null,
     );
   }
