@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import '../../../common/errors/failure.dart';
 import '../../../common/exceptions/server_exception.dart';
 import '../models/auth_response_model.dart';
 import 'auth_remote_data_source.dart';
 import 'auth_repository.dart';
 import '../models/message_response_model.dart';
+import '../models/verification_status_model.dart';
 
 class AuthRepositoryImpl
     implements AuthRepository {
@@ -102,5 +104,34 @@ verifyEmail({
     );
   }
 }
-
+@override
+Future<MessageResponseModel>
+uploadLicense({
+  required MultipartFile file,
+}) async {
+  try {
+    return await remoteDataSource
+        .uploadLicense(
+      file: file,
+    );
+  } on ServerException catch (e) {
+    throw Failure(
+      statusCode: e.statusCode,
+      message: e.message,
+    );
+  }
+}
+@override
+Future<VerificationStatusModel>
+getVerificationStatus() async {
+  try {
+    return await remoteDataSource
+        .getVerificationStatus();
+  } on ServerException catch (e) {
+    throw Failure(
+      statusCode: e.statusCode,
+      message: e.message,
+    );
+  }
+}
 }

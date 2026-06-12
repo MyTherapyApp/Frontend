@@ -32,4 +32,11 @@ class ApiConstants {
     String therapistId,
   ) =>
       '/api/admin/therapists/$therapistId/reject';
+
+    // Profile
+  static const String uploadLicense =
+      '/api/profile/upload-license';
+
+      static const String verificationStatus =
+      '/api/profile/verification-status';
 }

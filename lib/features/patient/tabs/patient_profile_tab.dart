@@ -95,7 +95,7 @@ class _PatientProfileTabState extends State<PatientProfileTab> {
     context,
     MaterialPageRoute(
       builder: (_) =>
-          const RoleSelectionScreen(),
+          const RoleSelectionScreen(verifiedEmail: '',),
     ),
     (route) => false,
   );

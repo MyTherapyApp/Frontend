@@ -8,7 +8,7 @@ import '../../../common/widgets/primary_button.dart';
 
 import '../controllers/auth_cubit.dart';
 import '../controllers/auth_state.dart';
-import 'patient_signup_screen.dart';
+import 'role_selection_screen.dart';
 
 class OtpVerificationScreen
     extends StatefulWidget {
@@ -52,10 +52,9 @@ class _OtpVerificationScreenState
             context,
             MaterialPageRoute(
               builder: (_) =>
-                  PatientSignupScreen(
-                verifiedEmail:
-                    widget.email,
-              ),
+                  RoleSelectionScreen(
+  verifiedEmail: widget.email,
+)
             ),
           );
         }

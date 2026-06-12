@@ -8,6 +8,7 @@ import '../../features/admin/admin_cubit.dart';
 import '../../features/admin/admin_pending_screen.dart';
 import '../../features/admin/admin_remote_data_source_impl.dart';
 import '../../features/admin/admin_repository_impl.dart';
+import '../../features/auth/screens/verification_status_screen.dart';
 import '../enums/user_role.dart';
 import '../network/dio_client.dart';
 import '../services/secure_storage_service.dart';
@@ -160,9 +161,7 @@ class _SplashContentState extends State<_SplashContent>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => MainScreen(
-            role: UserRole.therapist,
-          ),
+          builder: (_) => VerificationStatusScreen()
         ),
       );
     }

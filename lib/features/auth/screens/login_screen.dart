@@ -3,6 +3,7 @@ import 'package:my_therapy/common/theme/app_colors.dart';
 import 'package:my_therapy/features/admin/admin_pending_screen.dart';
 import 'package:my_therapy/features/auth/screens/reset_password_screen.dart';
 import 'package:my_therapy/features/auth/screens/role_selection_screen.dart';
+import 'package:my_therapy/features/auth/screens/verification_status_screen.dart';
 
 import '../../../common/enums/user_role.dart';
 import '../../../common/helpers/validators.dart';
@@ -71,9 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (_) => MainScreen(
-              role: UserRole.therapist,
-            ),
+            builder: (_) => VerificationStatusScreen()
           ),
           (route) => false,
         );
@@ -225,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => RoleSelectionScreen()),
+                        MaterialPageRoute(builder: (context) => RoleSelectionScreen(verifiedEmail: '',)),
                       );
                     },
 
@@ -233,28 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 35),
 
-                  /// Continue With
-                  // const Text(
-                  //   'or continue with',
-                  //   style: TextStyle(fontSize: 15),
-                  // ),
 
-                  // const SizedBox(height: 18),
-
-                  // InkWell(
-                  //   onTap: () {},
-                  //   borderRadius: BorderRadius.circular(30),
-                  //   child: CircleAvatar(
-                  //     radius: 20,
-                  //     backgroundColor: Colors.grey.shade100,
-                  //     child: Image.network(
-                  //       'https://cdn-icons-png.flaticon.com/512/300/300221.png',
-                  //       width: 22,
-                  //     ),
-                  //   ),
-                  // ),
-
-                  const SizedBox(height: 20),
                 ],
               ),
             ),
