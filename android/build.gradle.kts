@@ -19,3 +19,13 @@ subprojects {
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            project.android.apply {
+                // بنجبر المشروع يطنش النسخة القديمة ويستخدم دي
+                buildToolsVersion = "34.0.0" 
+            }
+        }
+    }
+}

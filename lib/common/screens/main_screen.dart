@@ -24,7 +24,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
-
   late final List<Widget> tabs;
 
   @override
@@ -36,12 +35,19 @@ class _MainScreenState extends State<MainScreen> {
         : _therapistTabs();
   }
 
+  // 👈 تعديل تابات المريض لتستقبل الـ Callback وتغير التابة النشطة
   List<Widget> _patientTabs() {
-    return const [
-      PatientHomeTab(),
-      PatientProfileTab(),
-      PatientNotificationTab(),
-      PatientChatTab(),
+    return [
+      PatientHomeTab(
+        onTabChanged: (index) {
+          setState(() {
+            currentIndex = index; // تحديث الـ Index هنا يغير تابة الـ Navigation Bar فوراً
+          });
+        },
+      ),
+      const PatientProfileTab(),
+      const PatientNotificationTab(),
+      const PatientChatTab(),
     ];
   }
 

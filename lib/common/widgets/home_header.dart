@@ -11,9 +11,7 @@ class HomeHeader extends StatelessWidget {
 
   const HomeHeader({
     super.key,
-
     required this.user,
-
     this.actions,
   });
 
@@ -24,7 +22,6 @@ class HomeHeader extends StatelessWidget {
         /// Avatar
         UserAvatar(
           size: 54,
-
           imageUrl: user.imageUrl,
         ),
 
@@ -34,14 +31,11 @@ class HomeHeader extends StatelessWidget {
         Expanded(
           child: Text(
             'Welcome ${user.displayName}!',
-
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-
               color: Color(0xFF1E3A8A),
             ),
           ),
@@ -50,7 +44,6 @@ class HomeHeader extends StatelessWidget {
         /// Actions
         if (actions != null) ...[
           const SizedBox(width: 12),
-
           Row(
             children: actions!,
           ),
