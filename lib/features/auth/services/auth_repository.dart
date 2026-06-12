@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import '../models/verification_status_model.dart';
 import '../models/auth_response_model.dart';
 import '../models/message_response_model.dart';
 
@@ -26,6 +28,11 @@ verifyEmail({
   required String email,
   required String code,
 });
+Future<MessageResponseModel>
+uploadLicense({
+  required MultipartFile file,
+});
 
-
+Future<VerificationStatusModel>
+getVerificationStatus();
 }

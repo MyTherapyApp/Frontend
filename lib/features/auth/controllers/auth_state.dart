@@ -1,5 +1,5 @@
 import '../models/auth_response_model.dart';
-
+import '../models/verification_status_model.dart';
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
@@ -36,5 +36,23 @@ class EmailVerified
 
   EmailVerified({
     required this.message,
+  });
+
+}
+class LicenseUploaded
+    extends AuthState {
+  final String message;
+
+  LicenseUploaded({
+    required this.message,
+  });
+}
+
+class VerificationStatusLoaded
+    extends AuthState {
+  final VerificationStatusModel status;
+
+  VerificationStatusLoaded({
+    required this.status,
   });
 }

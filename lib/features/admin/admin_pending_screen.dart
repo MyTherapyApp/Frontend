@@ -54,7 +54,7 @@ class _AdminPendingScreenState
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (_) => const RoleSelectionScreen(),
+            builder: (_) => const RoleSelectionScreen(verifiedEmail: '',),
           ),
           (route) => false,
         );

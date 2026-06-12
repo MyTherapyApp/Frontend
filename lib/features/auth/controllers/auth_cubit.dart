@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:dio/dio.dart';
 import '../../../common/errors/failure.dart';
 import '../../../common/network/dio_client.dart';
 import '../../../common/services/secure_storage_service.dart';
@@ -193,6 +193,72 @@ Future<void> registerTherapist({
     emit(
       AuthSuccess(
         authResponse: response,
+      ),
+    );
+  } on Failure catch (e) {
+    emit(
+      AuthFailure(
+        message: e.message,
+      ),
+    );
+  }
+}
+
+// Upload License
+Future<void> uploadLicense({
+  required String filePath,
+  required String fileName,
+}) async {
+  emit(AuthLoading());
+
+  try {
+    print('FILE PATH => $filePath');
+    print('FILE NAME => $fileName');
+
+    print(
+      'HEADERS => ${DioClient.dio.options.headers}',
+    );
+    final file = await MultipartFile.fromFile(
+      filePath,
+      filename: fileName,
+    );
+
+    final response =
+        await repository.uploadLicense(
+      file: file,
+    );
+print(
+      'UPLOAD SUCCESS => ${response.message}',
+    );
+    emit(
+      LicenseUploaded(
+        message: response.message,
+      ),
+    );
+  } on Failure catch (e) {
+    print(
+      'UPLOAD FAILURE => ${e.message}',
+    );
+
+    emit(
+      AuthFailure(
+        message: e.message,
+      ),
+    );
+  }
+}
+
+// Verification Status
+Future<void> getVerificationStatus() async {
+  emit(AuthLoading());
+
+  try {
+    final status =
+        await repository.getVerificationStatus();
+
+    emit(
+      VerificationStatusLoaded(
+        status: status,
       ),
     );
   } on Failure catch (e) {

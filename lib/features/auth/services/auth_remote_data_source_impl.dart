@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:my_therapy/features/auth/models/auth_response_model.dart';
-
+import '../models/verification_status_model.dart';
 import '../../../common/exceptions/server_exception.dart';
 import '../../../common/network/api_constants.dart';
 import '../../../common/network/dio_client.dart';
@@ -158,5 +158,46 @@ verifyEmail({
       message: 'Something went wrong',
     );
   }
-  
+  @override
+Future<MessageResponseModel>
+uploadLicense({
+  required MultipartFile file,
+}) async {
+  try {
+    final formData = FormData.fromMap({
+      'file': file,
+    });
+    print('UPLOAD STARTED');
+
+    final response = await DioClient.dio.post(
+      ApiConstants.uploadLicense,
+      data: formData,
+    );
+print('SUCCESS => ${response.data}');
+    return MessageResponseModel.fromJson(
+      response.data,
+    );
+  } on DioException catch (e) {
+    print('STATUS => ${e.response?.statusCode}');
+    print('DATA => ${e.response?.data}');
+    print('ERROR => ${e.message}');
+
+    _handleDioException(e);
+  }
+}
+@override
+Future<VerificationStatusModel>
+getVerificationStatus() async {
+  try {
+    final response = await DioClient.dio.get(
+      ApiConstants.verificationStatus,
+    );
+
+    return VerificationStatusModel.fromJson(
+      response.data,
+    );
+  } on DioException catch (e) {
+    _handleDioException(e);
+  }
+}
 }

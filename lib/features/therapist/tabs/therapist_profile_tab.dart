@@ -97,7 +97,7 @@ class _TherapistProfileTabState
     context,
     MaterialPageRoute(
       builder: (_) =>
-          const RoleSelectionScreen(),
+          const RoleSelectionScreen(verifiedEmail: '',),
     ),
     (route) => false,
   );

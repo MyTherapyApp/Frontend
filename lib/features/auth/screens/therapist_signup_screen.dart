@@ -1,39 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_therapy/common/enums/user_role.dart';
 import 'package:my_therapy/common/theme/app_colors.dart';
 import 'package:my_therapy/features/auth/screens/login_screen.dart';
 
 import '../../../common/helpers/validators.dart';
-import '../../../common/screens/main_screen.dart';
 import '../../../common/widgets/custom_appbar.dart';
 import '../../../common/widgets/custom_text_button.dart';
 import '../../../common/widgets/custom_text_field.dart';
 import '../../../common/widgets/dismiss_keyboard.dart';
 import '../../../common/widgets/primary_button.dart';
-import 'package:file_picker/file_picker.dart' as fp;
-import '../../../common/helpers/file_picker_helper.dart';
+import '../controllers/auth_cubit.dart';
+import '../controllers/auth_state.dart';
+import 'email_verification_screen.dart';
+import 'upload_license_screen.dart';
 
 class TherapistSignupScreen extends StatefulWidget {
-  const TherapistSignupScreen({super.key});
+  final String verifiedEmail;
+  const TherapistSignupScreen({super.key,required this.verifiedEmail});
 
   @override
   State<TherapistSignupScreen> createState() => _TherapistSignupScreenState();
 }
 
 class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  final fullNameController = TextEditingController();
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>();
+final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final specializationController = TextEditingController();
-  final experienceController = TextEditingController();
+  final licenseNumberController = TextEditingController();
   final phoneController = TextEditingController();
+  final dateController = TextEditingController();
 
-  fp.PlatformFile? _selectedLicenceFile;
+  int? selectedGender;
+  DateTime? selectedDate;
 
+  // fp.PlatformFile? _selectedLicenceFile;
 
+@override
+void initState() {
+  super.initState();
+
+  emailController.text =
+      widget.verifiedEmail;
+}
   @override
   void dispose() {
     fullNameController.dispose();
@@ -41,39 +54,41 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
     passwordController.dispose();
     confirmPasswordController.dispose();
     specializationController.dispose();
-    experienceController.dispose();
+    licenseNumberController.dispose();
     phoneController.dispose();
+    dateController.dispose();
     super.dispose();
-  }
-
-  void signUp() {
-    FocusScope.of(context).unfocus();
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => MainScreen(
-            role: UserRole.therapist,
-          ),
-        ),
-      );
-    }
-
-  }
-
-  Future<void> _pickLicence() async {
-    final fp.PlatformFile? file = await FilePickerHelper.pickLicence();
-    if (file != null) {
-      setState(() {
-        _selectedLicenceFile = file;
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return DismissKeyboard(
-      child: Scaffold(
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthFailure) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(state.message),
+      ),
+    );
+  }
+  if (state is AuthSuccess) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            const UploadLicenseScreen(),
+      ),
+    );
+  }
+
+        // AuthSuccess handling (navigation to Upload License screen)
+        // will be added in the next phase.
+      },
+      builder: (context, state) {
+        final isLoading = state is AuthLoading;
+
+        return DismissKeyboard(
+          child: Scaffold(
         backgroundColor: Colors.white,
         appBar: const CustomAppBar(
           title: 'Sign Up',
@@ -107,7 +122,7 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
                     title: 'Email',
                     hintText: 'mail@gmail.com',
                     keyboardType: TextInputType.emailAddress,
-                    validator: Validators.email,
+                    readOnly: true,
                     suffixIcon: const Icon(
                       Icons.email,
                       color: AppColors.hint,
@@ -155,12 +170,75 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
 
                   const SizedBox(height: 18),
 
-                  /// Experience
+                  /// License Number
                   CustomTextField(
-                    controller: experienceController,
-                    title: 'Experience',
-                    hintText: '+3 Years',
-                    validator: Validators.experience,
+                    controller: licenseNumberController,
+                    title: 'License Number',
+                    hintText: 'Enter your license number',
+                    validator: Validators.requiredField,
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  /// Gender
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Gender',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+
+                  RadioListTile<int>(
+                    title: const Text('Male'),
+                    value: 1,
+                    groupValue: selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                      });
+                    },
+                  ),
+
+                  RadioListTile<int>(
+                    title: const Text('Female'),
+                    value: 2,
+                    groupValue: selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                      });
+                    },
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  /// Date of Birth
+                  CustomTextField(
+                    controller: dateController,
+                    title: 'Date of Birth',
+                    hintText: 'Select date',
+                    readOnly: true,
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        firstDate: DateTime(1950),
+                        lastDate: DateTime.now(),
+                        initialDate: DateTime(2000),
+                      );
+
+                      if (picked != null) {
+                        selectedDate = picked;
+
+                        dateController.text =
+                            '${picked.day}/${picked.month}/${picked.year}';
+
+                        setState(() {});
+                      }
+                    },
                   ),
 
                   const SizedBox(height: 18),
@@ -175,42 +253,53 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
                     textInputAction: TextInputAction.done,
                   ),
 
-                  const SizedBox(height: 12),
-
-                  /// Upload Licence
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTextButton(
-                          text: _selectedLicenceFile == null
-                              ? 'Upload Licence'
-                              : _selectedLicenceFile!.name,
-                          onPressed: _pickLicence,
-                        ),
-                        if (_selectedLicenceFile != null)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4, left: 4),
-                            child: Text(
-                              '✓ File selected',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.green.shade600,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-
                   const SizedBox(height: 18),
 
+                  /// Sign Up
                   /// Sign Up
                   PrimaryButton(
                     title: 'SignUp',
                     width: double.infinity,
-                    onPressed: signUp,
+                    loading: isLoading,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+
+                      if (selectedGender == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Select gender'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      if (selectedDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Select date of birth'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      context.read<AuthCubit>().registerTherapist(
+                            fullName: fullNameController.text.trim(),
+                            email: emailController.text.trim(),
+                            password: passwordController.text,
+                            phone: phoneController.text.trim(),
+                            gender: selectedGender!,
+                            dateOfBirth: selectedDate!,
+                            isAnonymous: false,
+                            specialization:
+                                specializationController.text.trim(),
+                            licenseNumber:
+                                licenseNumberController.text.trim(),
+                          );
+                    },
                   ),
 
                   const SizedBox(height: 25),
@@ -238,6 +327,28 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
                   ),
 
                   const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Go Verify Your Email? ',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      CustomTextButton(
+                        text: 'Email Verification',
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const EmailVerificationScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -245,5 +356,7 @@ class _TherapistSignupScreenState extends State<TherapistSignupScreen> {
         ),
       ),
     );
+        },
+  );
   }
 }

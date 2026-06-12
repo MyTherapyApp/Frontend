@@ -5,7 +5,8 @@ import 'package:my_therapy/features/auth/screens/login_screen.dart';
 import 'package:my_therapy/features/auth/screens/patient_signup_screen.dart';
 import 'package:my_therapy/features/auth/screens/therapist_signup_screen.dart';
 class RoleSelectionScreen extends StatelessWidget {
-  const RoleSelectionScreen({super.key});
+  final String verifiedEmail;
+  const RoleSelectionScreen({super.key,required this.verifiedEmail,});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     /// Navigate Therapist Login
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TherapistSignupScreen()),
+                      MaterialPageRoute(builder: (context) => TherapistSignupScreen(verifiedEmail: verifiedEmail)),
                       );
                   },
                 ),
@@ -91,7 +92,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     /// Navigate Patient Login
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PatientSignupScreen(verifiedEmail: '',)),
+                      MaterialPageRoute(builder: (context) => PatientSignupScreen(verifiedEmail: verifiedEmail,)),
                       );
                   },
                 ),
