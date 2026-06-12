@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widgets/custom_appbar.dart';
 import '../../../common/widgets/logout_button.dart';
 import '../../../common/widgets/profile_menu_item.dart';
+import '../../auth/controllers/auth_cubit.dart';
+import '../../auth/screens/role_selection_screen.dart';
 import '../helpers/therapist_profile_menu.dart';
 import '../../../common/helpers/current_user.dart';
 import '../../../common/widgets/profile_header.dart';
@@ -84,8 +87,20 @@ class _TherapistProfileTabState
                 alignment: Alignment.centerLeft,
                 child: LogoutButton(
                   onTap: () async {
-                  // await AuthService.logout();
-                  // navigation later
+                  await context
+      .read<AuthCubit>()
+      .logout();
+
+  if (!context.mounted) return;
+
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (_) =>
+          const RoleSelectionScreen(),
+    ),
+    (route) => false,
+  );
                 },
                             ),
               ),

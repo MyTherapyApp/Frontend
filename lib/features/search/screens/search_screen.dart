@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_therapy/common/widgets/custom_appbar.dart';
 
 import '../../../common/enums/user_role.dart';
-import '../../../common/theme/app_colors.dart';
 import '../../../common/widgets/custom_search_field.dart';
 import '../../../common/widgets/header_action_button.dart';
 

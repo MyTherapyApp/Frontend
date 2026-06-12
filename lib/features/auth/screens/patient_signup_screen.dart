@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_therapy/common/enums/user_role.dart';
 import 'package:my_therapy/common/theme/app_colors.dart';
+import 'package:my_therapy/features/auth/screens/email_verification_screen.dart';
 import 'package:my_therapy/features/auth/screens/login_screen.dart';
 
 import '../../../common/helpers/validators.dart';
@@ -10,9 +12,15 @@ import '../../../common/widgets/custom_text_button.dart';
 import '../../../common/widgets/custom_text_field.dart';
 import '../../../common/widgets/dismiss_keyboard.dart';
 import '../../../common/widgets/primary_button.dart';
+import '../controllers/auth_cubit.dart';
+import '../controllers/auth_state.dart';
 
 class PatientSignupScreen extends StatefulWidget {
-  const PatientSignupScreen({super.key});
+  final String verifiedEmail;
+  const PatientSignupScreen({
+    super.key,
+    required this.verifiedEmail,
+  });
 
   @override
   State<PatientSignupScreen> createState() => _PatientSignupScreenState();
@@ -26,33 +34,81 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final phoneController = TextEditingController();
+  int? selectedGender;
+
+DateTime? selectedDate;
+
+bool isAnonymous = false;
+
+final dateController = TextEditingController();
+
+@override
+void initState() {
+  super.initState();
+
+  emailController.text =
+      widget.verifiedEmail;
+}
+@override
+void dispose() {
+  fullNameController.dispose();
+  emailController.dispose();
+  passwordController.dispose();
+  confirmPasswordController.dispose();
+  phoneController.dispose();
+  dateController.dispose();
+  super.dispose();
+}
+
+
 
   @override
-  void dispose() {
-    fullNameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    phoneController.dispose();
-    super.dispose();
-  }
+  Widget build(BuildContext context) {
+    return BlocConsumer<AuthCubit, AuthState>(
+  listener: (context, state) {
+  if (state is AuthSuccess) {
+    final role =
+        state.authResponse.role;
 
-  void signup() {
-    FocusScope.of(context).unfocus();
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
+    if (role == 'Patient') {
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (_) => MainScreen(
             role: UserRole.patient,
           ),
         ),
+        (route) => false,
+      );
+    } else if (role == 'Therapist') {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainScreen(
+            role: UserRole.therapist,
+          ),
+        ),
+        (route) => false,
       );
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  if (state is AuthFailure) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
+      SnackBar(
+        content: Text(
+          state.message,
+        ),
+      ),
+    );
+  }
+},
+
+  builder: (context, state) {
+    final isLoading =
+        state is AuthLoading;
+
     return DismissKeyboard(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -89,7 +145,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                     title: 'Email',
                     hintText: 'mail@gmail.com',
                     keyboardType: TextInputType.emailAddress,
-                    validator: Validators.email,
+                    readOnly: true,
                     suffixIcon: const Icon(
                       Icons.email,
                       color: AppColors.hint,
@@ -129,13 +185,86 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                     title: 'Phone Number',
                     hintText: '0458692997864',
                     keyboardType: TextInputType.phone,
-                    validator: Validators.requiredField,
-                    textInputAction: TextInputAction.done,
+                    validator: Validators.phone,
+                    textInputAction: TextInputAction.next,
                     suffixIcon: const Icon(
                       Icons.phone,
                       color: AppColors.hint,
                     ),
                   ),
+                  const SizedBox(height: 20),
+
+const Align(
+  alignment: Alignment.centerLeft,
+  child: Text(
+    'Gender',
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+    ),
+  ),
+),
+
+RadioListTile<int>(
+  title: const Text('Male'),
+  value: 1,
+  groupValue: selectedGender,
+  onChanged: (value) {
+    setState(() {
+      selectedGender = value;
+    });
+  },
+),
+
+RadioListTile<int>(
+  title: const Text('Female'),
+  value: 2,
+  groupValue: selectedGender,
+  onChanged: (value) {
+    setState(() {
+      selectedGender = value;
+    });
+  },
+),
+const SizedBox(height: 20,),
+CustomTextField(
+  controller: dateController,
+  title: 'Date of Birth',
+  hintText: 'Select date',
+  readOnly: true,
+  onTap: () async {
+    final picked =
+        await showDatePicker(
+      context: context,
+      firstDate: DateTime(1950),
+      lastDate: DateTime.now(),
+      initialDate: DateTime(2000),
+    );
+
+    if (picked != null) {
+      selectedDate = picked;
+
+      dateController.text =
+          '${picked.day}/${picked.month}/${picked.year}';
+
+      setState(() {});
+    }
+  },
+),
+const SizedBox(height: 20,),
+CheckboxListTile(
+  value: isAnonymous,
+  contentPadding: EdgeInsets.zero,
+  title: const Text(
+    'Register Anonymously',
+  ),
+  onChanged: (value) {
+    setState(() {
+      isAnonymous =
+          value ?? false;
+    });
+  },
+),
 
                   const SizedBox(height: 35),
 
@@ -143,43 +272,60 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                   PrimaryButton(
                     title: 'sign up',
                     width: double.infinity,
-                    onPressed: signup,
-                  ),
+                    loading: isLoading,
+                    onPressed: () {
+  FocusScope.of(context).unfocus();
 
-                  const SizedBox(height: 25),
+  if (!_formKey.currentState!
+      .validate()) {
+    return;
+  }
 
-                  /// Divider Text
-                  Row(
-                    children: const [
-                      Expanded(child: Divider()),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(
-                          'Or sign up with',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppColors.hint,
-                          ),
-                        ),
-                      ),
-                      Expanded(child: Divider()),
-                    ],
-                  ),
+  if (selectedGender == null) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
+      const SnackBar(
+        content:
+            Text('Select gender'),
+      ),
+    );
+    return;
+  }
 
-                  const SizedBox(height: 20),
+  if (selectedDate == null) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Select date of birth',
+        ),
+      ),
+    );
+    return;
+  }
 
-                  /// Google Button
-                  InkWell(
-                    onTap: () {},
-                    borderRadius: BorderRadius.circular(30),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.grey.shade100,
-                      child: Image.network(
-                        'https://cdn-icons-png.flaticon.com/512/300/300221.png',
-                        width: 22,
-                      ),
-                    ),
+  context
+      .read<AuthCubit>()
+      .registerPatient(
+        fullName:
+            fullNameController.text
+                .trim(),
+        email:
+            emailController.text
+                .trim(),
+        password:
+            passwordController.text,
+        phone:
+            phoneController.text
+                .trim(),
+        gender:
+            selectedGender!,
+        dateOfBirth:
+            selectedDate!,
+        isAnonymous:
+            isAnonymous,
+      );
+},
                   ),
 
                   const SizedBox(height: 25),
@@ -190,7 +336,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                     children: [
                       const Text(
                         'Already have an account? ',
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 16),
                       ),
                       CustomTextButton(
                         text: 'Login',
@@ -208,6 +354,28 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                   ),
 
                   const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Go Verify Your Email? ',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      CustomTextButton(
+                        text: 'Email Verification',
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const EmailVerificationScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -215,5 +383,9 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
         ),
       ),
     );
+    
+  },
+    );
+    
   }
 }

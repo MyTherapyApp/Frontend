@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_therapy/common/theme/app_colors.dart'; 
 import 'package:my_therapy/common/widgets/primary_button.dart';
-import 'package:my_therapy/features/auth/screens/role_selection_screen.dart';
+import 'package:my_therapy/features/auth/screens/email_verification_screen.dart';
 
 
 class OnboardingScreen extends StatefulWidget {
@@ -195,7 +195,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _finish() {
     Navigator.pushReplacement(
       context, 
-      MaterialPageRoute(builder: (context) => const RoleSelectionScreen()),
+      MaterialPageRoute(builder: (context) => const EmailVerificationScreen()),
     );
   }
 }
