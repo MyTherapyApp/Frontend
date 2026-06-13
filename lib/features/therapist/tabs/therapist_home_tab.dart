@@ -6,6 +6,7 @@ import '../../../common/helpers/current_user.dart';
 import '../../../common/widgets/custom_search_field.dart';
 import '../../../common/widgets/header_action_button.dart';
 import '../../../common/widgets/home_header.dart';
+import '../screens/choose_availability_screen.dart';
 
 class TherapistHomeTab extends StatelessWidget {
   const TherapistHomeTab({super.key});
@@ -26,7 +27,12 @@ class TherapistHomeTab extends StatelessWidget {
                 actions: [
                   HeaderActionButton(
                     icon: Icons.calendar_month_rounded,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChooseAvailabilityScreen()),
+                      );
+                    },
                   ),
                   const SizedBox(width: 10),
                 HeaderActionButton(
