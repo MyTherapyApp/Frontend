@@ -6,7 +6,7 @@ class FilePickerHelper {
   static Future<fp.PlatformFile?> pickLicence() async {
     final fp.FilePickerResult? result = await fp.FilePicker.platform.pickFiles(
       type: fp.FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
       allowMultiple: false,
     );
 

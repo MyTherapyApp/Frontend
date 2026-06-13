@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_therapy/common/theme/app_colors.dart';
+import 'package:my_therapy/features/admin/admin_pending_screen.dart';
 import 'package:my_therapy/features/auth/screens/reset_password_screen.dart';
 import 'package:my_therapy/features/auth/screens/role_selection_screen.dart';
+import 'package:my_therapy/features/auth/screens/verification_status_screen.dart';
 
 import '../../../common/enums/user_role.dart';
 import '../../../common/helpers/validators.dart';
@@ -11,6 +13,10 @@ import '../../../common/widgets/custom_text_button.dart';
 import '../../../common/widgets/custom_text_field.dart';
 import '../../../common/widgets/dismiss_keyboard.dart';
 import '../../../common/widgets/primary_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../controllers/auth_cubit.dart';
+import '../controllers/auth_state.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -30,18 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool rememberMe = false;
 
-  void login() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => MainScreen(
-            role: widget.role,
-          ),
-        ),
-      );
-    }
-  }
 
   @override
   void dispose() {
@@ -53,6 +47,62 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<AuthCubit, AuthState>(
+  listener: (context, state) {
+    if (state is AuthSuccess) {
+      final authResponse = state.authResponse;
+        print(authResponse.claims);
+        print(authResponse.role);
+      final role = state.authResponse.role;
+          
+
+      if (role == 'Patient') {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MainScreen(
+              role: UserRole.patient,
+            ),
+          ),
+          (route) => false,
+        );
+      }
+
+      else if (role == 'Therapist') {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => VerificationStatusScreen()
+          ),
+          (route) => false,
+        );
+      }
+
+      else if (role == 'Admin') {
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const AdminPendingScreen(),
+    ),
+    (route) => false,
+  );
+}
+    }
+
+    if (state is AuthFailure) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content:
+              Text(state.message),
+        ),
+      );
+    }
+  },
+  builder: (context, state) {
+    final isLoading =
+        state is AuthLoading;
+
     return DismissKeyboard(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -90,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     title: 'Password',
                     hintText: '********',
                     isPassword: true,
-                    validator: Validators.password,
+                    validator: Validators.loginPassword,
                     textInputAction: TextInputAction.done,
                   ),
 
@@ -99,20 +149,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   /// Remember me + Forget Password
                   Row(
                     children: [
-                      Checkbox(
-                        value: rememberMe,
-                        onChanged: (value) {
-                          setState(() {
-                            rememberMe = value!;
-                          });
-                        },
-                      ),
+                      // Checkbox(
+                      //   value: rememberMe,
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       rememberMe = value!;
+                      //     });
+                      //   },
+                      // ),
 
-                      const Text('Remember me',
-                      style: TextStyle(
-                        fontSize: 18
-                      ),
-                      ),
+                      // const Text('Remember me',
+                      // style: TextStyle(
+                      //   fontSize: 18
+                      // ),
+                      // ),
 
                       const Spacer(),
 
@@ -134,8 +184,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   PrimaryButton(
                     title: "Login",
                       width: double.infinity,
+                      loading: isLoading,
                       
-                    onPressed: login,
+                    onPressed: (){
+    FocusScope.of(context)
+        .unfocus();
+
+    if (!_formKey.currentState!
+        .validate()) {
+      return;
+    }
+
+    context
+        .read<AuthCubit>()
+        .login(
+          email:
+              emailController.text
+                  .trim(),
+          password:
+              passwordController.text,
+        );
+  },
                   ),
 
                   const SizedBox(height: 50),
@@ -155,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => RoleSelectionScreen()),
+                        MaterialPageRoute(builder: (context) => RoleSelectionScreen(verifiedEmail: '',)),
                       );
                     },
 
@@ -163,34 +232,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 35),
 
-                  /// Continue With
-                  const Text(
-                    'or continue with',
-                    style: TextStyle(fontSize: 15),
-                  ),
 
-                  const SizedBox(height: 18),
-
-                  InkWell(
-                    onTap: () {},
-                    borderRadius: BorderRadius.circular(30),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.grey.shade100,
-                      child: Image.network(
-                        'https://cdn-icons-png.flaticon.com/512/300/300221.png',
-                        width: 22,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
                 ],
               ),
             ),
           ),
         ),
       ),
-    );
+            );
+  },
+);
   }
+  
 }

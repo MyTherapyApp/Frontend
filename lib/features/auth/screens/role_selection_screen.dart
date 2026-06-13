@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_therapy/common/enums/user_role.dart';
 import 'package:my_therapy/common/widgets/primary_button.dart';
+import 'package:my_therapy/features/auth/screens/login_screen.dart';
 import 'package:my_therapy/features/auth/screens/patient_signup_screen.dart';
 import 'package:my_therapy/features/auth/screens/therapist_signup_screen.dart';
 class RoleSelectionScreen extends StatelessWidget {
-  const RoleSelectionScreen({super.key});
+  final String verifiedEmail;
+  const RoleSelectionScreen({super.key,required this.verifiedEmail,});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     /// Navigate Therapist Login
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TherapistSignupScreen()),
+                      MaterialPageRoute(builder: (context) => TherapistSignupScreen(verifiedEmail: verifiedEmail)),
                       );
                   },
                 ),
@@ -89,7 +92,21 @@ class RoleSelectionScreen extends StatelessWidget {
                     /// Navigate Patient Login
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PatientSignupScreen()),
+                      MaterialPageRoute(builder: (context) => PatientSignupScreen(verifiedEmail: verifiedEmail,)),
+                      );
+                  },
+                ),
+                SizedBox(height: height * 0.02),
+                /// Admin Button
+                PrimaryButton(
+                  title: "I'm an Admin",
+                  width: double.infinity,
+                  height: height * 0.065,
+                  onPressed: () {
+                    /// Navigate Patient Login
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen(role: UserRole.admin)),
                       );
                   },
                 ),

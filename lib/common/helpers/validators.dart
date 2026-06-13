@@ -103,4 +103,31 @@ class Validators {
     }
     return null;
   }
+
+  static String? gender(int? value) {
+  if (value == null) {
+    return 'Please select gender';
+  }
+
+  return null;
+}
+
+static String? dateOfBirth(DateTime? value) {
+  if (value == null) {
+    return 'Please select date of birth';
+  }
+
+  return null;
+}
+
+static String? loginPassword(
+  String? value,
+) {
+  if (value == null ||
+      value.isEmpty) {
+    return 'Password is required';
+  }
+
+  return null;
+}
 }

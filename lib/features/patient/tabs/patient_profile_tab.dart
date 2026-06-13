@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_therapy/features/auth/screens/role_selection_screen.dart';
 
 import '../../../common/helpers/current_user.dart';
 import '../../../common/widgets/custom_appbar.dart';
 import '../../../common/widgets/logout_button.dart';
 import '../../../common/widgets/profile_header.dart';
 import '../../../common/widgets/profile_menu_item.dart';
+import '../../auth/controllers/auth_cubit.dart';
 import '../helpers/patient_profile_menu.dart';
 
 class PatientProfileTab extends StatefulWidget {
@@ -82,8 +85,20 @@ class _PatientProfileTabState extends State<PatientProfileTab> {
                 alignment: Alignment.centerLeft,
                 child: LogoutButton(
                   onTap: () async {
-                  // await AuthService.logout();
-                  // navigation later
+                  await context
+      .read<AuthCubit>()
+      .logout();
+
+  if (!context.mounted) return;
+
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (_) =>
+          const RoleSelectionScreen(verifiedEmail: '',),
+    ),
+    (route) => false,
+  );
                 },
                             ),
               ),
