@@ -25,6 +25,7 @@ class _TherapistProfileTabState
   @override
   Widget build(BuildContext context) {
     final menuItems = TherapistProfileMenu.items(
+      context: context,
       notificationEnabled: notificationEnabled,
       onNotificationToggle: (value) {
         setState(() {

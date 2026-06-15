@@ -246,10 +246,20 @@ Future<void> _showAddAvailabilityDialog(
                         children: [
                           Row(
   children: [
-    const Icon(
-      Icons.person_outline,
-      color: AppColors.primary,
-    ),
+    CircleAvatar(
+  radius: 22,
+  backgroundImage:
+      slot.therapistProfilePicture != null
+          ? NetworkImage(
+              slot.therapistProfilePicture!,
+            )
+          : null,
+  child: slot.therapistProfilePicture == null
+      ? const Icon(
+          Icons.person,
+        )
+      : null,
+),
     const SizedBox(width: 8),
 
     Expanded(

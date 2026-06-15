@@ -16,4 +16,25 @@ class FilePickerHelper {
 
     return null;
   }
+
+  /// Profile image
+  static Future<fp.PlatformFile?> pickProfileImage() async {
+    final result =
+        await fp.FilePicker.pickFiles(
+      type: fp.FileType.custom,
+      allowedExtensions: [
+        'jpg',
+        'jpeg',
+        'png',
+      ],
+      allowMultiple: false,
+    );
+
+    if (result != null &&
+        result.files.isNotEmpty) {
+      return result.files.first;
+    }
+
+    return null;
+  }
 }
