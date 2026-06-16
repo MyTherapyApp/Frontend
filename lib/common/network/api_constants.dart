@@ -37,6 +37,9 @@ class ApiConstants {
   static const String uploadLicense =
       '/api/profile/upload-license';
 
+    static const String uploadPicture =
+    '/api/profile/upload-picture';
+
       static const String verificationStatus =
       '/api/profile/verification-status';
 

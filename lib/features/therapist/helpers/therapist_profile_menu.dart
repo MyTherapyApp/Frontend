@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../common/enums/menu_item_type.dart';
 import '../../../common/models/profile_menu_item_model.dart';
+import '../screens/therapist_edit_profile_screen.dart';
 
 class TherapistProfileMenu {
   static List<ProfileMenuItemModel> items({
+    required BuildContext context,
     required bool notificationEnabled,
     required ValueChanged<bool> onNotificationToggle,
   }) {
@@ -54,7 +56,12 @@ class TherapistProfileMenu {
         type: MenuItemType.arrow,
 
         onTap: () {
-          // navigate to personal details screen
+          Navigator.push(
+          context,
+      MaterialPageRoute(
+        builder: (_) => const TherapistEditProfileScreen(),
+      ),
+    );
         },
       ),
     ];

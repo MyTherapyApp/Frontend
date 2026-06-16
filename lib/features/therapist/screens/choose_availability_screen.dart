@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:my_therapy/common/theme/app_colors.dart';
 import 'package:my_therapy/common/widgets/custom_appbar.dart';
 
+import '../../../common/network/api_constants.dart';
 import '../controllers/availability_cubit.dart';
 import '../controllers/availability_state.dart';
 import '../services/therapist_service_impl.dart';
@@ -246,10 +247,20 @@ Future<void> _showAddAvailabilityDialog(
                         children: [
                           Row(
   children: [
-    const Icon(
-      Icons.person_outline,
-      color: AppColors.primary,
-    ),
+    CircleAvatar(
+  radius: 22,
+  backgroundImage:
+      slot.therapistProfilePicture != null
+          ? NetworkImage(
+              "${ApiConstants.baseUrl}/${slot.therapistProfilePicture}",
+            )
+          : null,
+  child: slot.therapistProfilePicture == null
+      ? const Icon(
+          Icons.person,
+        )
+      : null,
+),
     const SizedBox(width: 8),
 
     Expanded(
