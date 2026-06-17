@@ -28,15 +28,7 @@ class _TherapistHomeTabState extends State<TherapistHomeTab> {
               HomeHeader(
                 user: therapistUser,
                 actions: [
-                  HeaderActionButton(
-                    icon: Icons.calendar_month_rounded,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChooseAvailabilityScreen()),
-                      );
-                    },
-                  ),
+                  HeaderActionButton( icon: Icons.calendar_month_rounded, onTap: () {}),
                   const SizedBox(width: 10),
                   HeaderActionButton(icon: Icons.notifications_rounded, onTap: () {}),
                 ],

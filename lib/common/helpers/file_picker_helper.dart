@@ -20,7 +20,7 @@ class FilePickerHelper {
   /// Profile image
   static Future<fp.PlatformFile?> pickProfileImage() async {
     final result =
-        await fp.FilePicker.pickFiles(
+        await fp.FilePicker.platform.pickFiles(
       type: fp.FileType.custom,
       allowedExtensions: [
         'jpg',
