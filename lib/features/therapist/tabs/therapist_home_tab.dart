@@ -28,7 +28,12 @@ class _TherapistHomeTabState extends State<TherapistHomeTab> {
               HomeHeader(
                 user: therapistUser,
                 actions: [
-                  HeaderActionButton( icon: Icons.calendar_month_rounded, onTap: () {}),
+                  HeaderActionButton( icon: Icons.calendar_month_rounded, onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChooseAvailabilityScreen()),
+                      );
+                  }),
                   const SizedBox(width: 10),
                   HeaderActionButton(icon: Icons.notifications_rounded, onTap: () {}),
                 ],
@@ -47,18 +52,17 @@ class _TherapistHomeTabState extends State<TherapistHomeTab> {
               ),
               const SizedBox(height: 32),
               
-              const Text(
-                'Next Session',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1B3B86),
-                ),
-              ),
-              const SizedBox(height: 12),
+              // const Text(
+              //   'Next Session',
+              //   style: TextStyle(
+              //     fontSize: 16,
+              //     fontWeight: FontWeight.bold,
+              //     color: Color(0xFF1B3B86),
+              //   ),
+              // ),
+              // const SizedBox(height: 12),
 
-              // استدعاء الكارد من الملف الخارجي
-              const TherapistUpcomingSessionWidget(),
+              // const TherapistUpcomingSessionWidget(),
             ],
           ),
         ),

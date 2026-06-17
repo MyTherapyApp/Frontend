@@ -249,10 +249,11 @@ Future<void> _showAddAvailabilityDialog(
   children: [
     CircleAvatar(
   radius: 22,
-  backgroundImage:
-      slot.therapistProfilePicture != null
+  backgroundImage: slot.therapistProfilePicture != null
           ? NetworkImage(
-              "${ApiConstants.baseUrl}/${slot.therapistProfilePicture}",
+              slot.therapistProfilePicture!.startsWith('http')
+              ? slot.therapistProfilePicture!
+              : "${ApiConstants.baseUrl}/${slot.therapistProfilePicture}",
             )
           : null,
   child: slot.therapistProfilePicture == null

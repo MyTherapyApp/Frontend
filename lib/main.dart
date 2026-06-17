@@ -12,17 +12,12 @@ import 'features/auth/controllers/auth_cubit.dart';
 import 'features/auth/services/auth_remote_data_source_impl.dart';
 import 'features/auth/services/auth_repository_impl.dart';
 
-// لو عاملة import لباكدج Zego هنا شيلي الكومنت من السطر اللي تحت
-// import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
-// 1. ✅ تعريف الـ navigatorKey كمتغير عام عشان Zego يقدر يتحكم في الشاشات
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  // تأمين تهيئة إطار عمل فلاتر قبل أي عملية
   WidgetsFlutterBinding.ensureInitialized();
   
-  // ✅ شلنا الـ Zego الـ temp من هنا عشان ميعملش تضارب وكراش وسرعنا فتح التطبيق
   runApp(const MyApp());
 }
 
@@ -51,15 +46,13 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        // 2. ✅ تمرير الـ navigatorKey للتطبيق
         navigatorKey: navigatorKey,
         theme: AppTheme.lightTheme,
         navigatorObservers: [
           KeyboardDismissObserver(),
-          // 3. ✅ (اختياري بس مهم) لو عاملة import لـ zego، ضيفي السطر ده عشان يراقب التنقلات:
           // ZegoUIKitPrebuiltCallInvitationService().navigatorObserver,
         ],
-        home: const SplashScreen(), // الـ Splash هيفتح ومنه نتحقق من التوكن ونوجه للمكان الصح
+        home: const SplashScreen(), 
       ),
     );
   }
