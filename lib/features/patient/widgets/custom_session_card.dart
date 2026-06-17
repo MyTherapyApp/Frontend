@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:zego_uikit/zego_uikit.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import '../../../common/widgets/user_avatar.dart';
 
 class CustomSessionCard extends StatelessWidget {
@@ -8,12 +10,13 @@ class CustomSessionCard extends StatelessWidget {
   final String time;
   final String? doctorImageUrl;
   final bool isConfirmed;
-  final String? statusText;        
-  final Color? statusColor;        
-  final Widget? bottomActionRow;   
-  final VoidCallback? onTap;       
-  final VoidCallback? onVideoTap; 
-  final VoidCallback? onStartSessionTap; // ⚡ 1. ضفنا متغير زرار بدء الجلسة
+  final String? statusText;
+  final Color? statusColor;
+  final Widget? bottomActionRow;
+  final VoidCallback? onTap;
+  final String? inviteeID;
+  final String? inviteeName;
+  final VoidCallback? onStartSessionTap;
 
   const CustomSessionCard({
     super.key,
@@ -27,8 +30,9 @@ class CustomSessionCard extends StatelessWidget {
     this.statusColor,
     this.bottomActionRow,
     this.onTap,
-    this.onVideoTap, 
-    this.onStartSessionTap, // ⚡ 2. ضفناه في الـ Constructor
+    this.inviteeID,
+    this.inviteeName,
+    this.onStartSessionTap,
   });
 
   @override
@@ -40,7 +44,7 @@ class CustomSessionCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Container(
-          width: double.infinity, 
+          width: double.infinity,
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -54,63 +58,100 @@ class CustomSessionCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(doctorName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1B3B86))),
-                        Text(specialty, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                        Text(
+                          doctorName, 
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1B3B86)),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          specialty, 
+                          style: const TextStyle(color: Colors.grey, fontSize: 12),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ],
                     ),
                   ),
-                  // ⚡ 3. أيقونة الفيديو هتظهر لو مررنا دالة onVideoTap
-                  if (onVideoTap != null)
+                  // 👇 زرار الاتصال شغال بنظام الـ Auto-generated ID (آمن جداً)
+                  if (inviteeID != null)
                     GestureDetector(
-                      onTap: onVideoTap,
-                      child: const CircleAvatar(
-                        radius: 18,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.videocam_rounded, color: Color(0xFF1B3B86), size: 20),
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        // يترك فارغاً لمنع التداخل
+                      },
+                      child: ZegoSendCallInvitationButton(
+                        isVideoCall: true,
+                        invitees: [
+                          ZegoUIKitUser(
+                            id: inviteeID!,
+                            name: inviteeName ?? doctorName,
+                          ),
+                        ],
+                        iconSize: const Size(36, 36),
+                        buttonSize: const Size(36, 36),
+                        onPressed: (code, message, list) {
+                          // يمكنك طباعة الـ code للـ Debugging
+                          debugPrint("Call Sent: $code - $message");
+                        },
                       ),
-                    )
+                    ),
                 ],
               ),
               const SizedBox(height: 12),
               const Divider(color: Colors.black12, height: 1),
               const SizedBox(height: 12),
-
               Row(
                 children: [
                   const Icon(Icons.calendar_today_rounded, size: 14, color: Color(0xFF1B3B86)),
                   const SizedBox(width: 4),
-                  Text(date, style: const TextStyle(fontSize: 12, color: Colors.black87)),
+                  Flexible(
+                    child: Text(
+                      date, 
+                      style: const TextStyle(fontSize: 12, color: Colors.black87),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                   const Spacer(),
-                  
                   if (statusText != null) ...[
-                    Row(
-                      children: [
-                        Container(
-                          width: 6,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: statusColor ?? Colors.green, 
-                            shape: BoxShape.circle,
+                    Flexible(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: statusColor ?? Colors.green,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(statusText!, style: const TextStyle(fontSize: 12, color: Colors.black87)),
-                      ],
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              statusText!, 
+                              style: const TextStyle(fontSize: 12, color: Colors.black87),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const Spacer(),
                   ],
-                  
                   const Icon(Icons.access_time_rounded, size: 14, color: Color(0xFF1B3B86)),
                   const SizedBox(width: 4),
-                  Text(time, style: const TextStyle(fontSize: 12, color: Colors.black87)),
+                  Flexible(
+                    child: Text(
+                      time, 
+                      style: const TextStyle(fontSize: 12, color: Colors.black87),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
-              
-              // ⚡ 4. زرار Start Session هيظهر تحت الوقت والحالة لو مررنا onStartSessionTap
               if (onStartSessionTap != null) ...[
                 const SizedBox(height: 10),
                 Align(
-                  alignment: Alignment.centerRight, // عشان ييجي ناحية اليمين زي التصميم
+                  alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: onStartSessionTap,
                     child: const Text(
@@ -124,7 +165,6 @@ class CustomSessionCard extends StatelessWidget {
                   ),
                 ),
               ],
-
               if (bottomActionRow != null) ...[
                 const SizedBox(height: 14),
                 bottomActionRow!,

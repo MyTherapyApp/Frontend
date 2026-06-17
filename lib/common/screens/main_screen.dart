@@ -35,19 +35,13 @@ class _MainScreenState extends State<MainScreen> {
         : _therapistTabs();
   }
 
-  // 👈 تعديل تابات المريض لتستقبل الـ Callback وتغير التابة النشطة
+  // ✅ تم تنظيف التابات وإزالة الباراميتر المسبب للخطأ
   List<Widget> _patientTabs() {
-    return [
-      PatientHomeTab(
-        onTabChanged: (index) {
-          setState(() {
-            currentIndex = index; // تحديث الـ Index هنا يغير تابة الـ Navigation Bar فوراً
-          });
-        },
-      ),
-      const PatientProfileTab(),
-      const PatientNotificationTab(),
-      const PatientChatTab(),
+    return const [
+      PatientHomeTab(), 
+      PatientProfileTab(),
+      PatientNotificationTab(),
+      PatientChatTab(),
     ];
   }
 

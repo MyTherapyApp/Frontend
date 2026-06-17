@@ -7,17 +7,16 @@ import '../../../common/helpers/current_user.dart';
 import '../../../common/widgets/custom_search_field.dart';
 import '../../../common/widgets/header_action_button.dart';
 import '../../../common/widgets/home_header.dart';
-import '../../search/screens/search_screen.dart'; 
+import '../../search/screens/search_screen.dart';
 import '../../../common/widgets/section_header.dart';
 import '../widgets/custom_session_card.dart';
 import '../widgets/therapist_info_card.dart';
 import '../widgets/tip_card.dart';
 import '../screens/my_sessions_tabs_screen.dart';
-import '../screens/book_session_screen.dart'; 
-import '../../../common/screens/call_page.dart'; 
+import '../screens/book_session_screen.dart';
 
 class PatientHomeTab extends StatefulWidget {
-  final ValueChanged<int>? onTabChanged; 
+  final ValueChanged<int>? onTabChanged;
 
   const PatientHomeTab({super.key, this.onTabChanged});
 
@@ -26,6 +25,8 @@ class PatientHomeTab extends StatefulWidget {
 }
 
 class _PatientHomeTabState extends State<PatientHomeTab> {
+  // تم إزالة أكواد Zego من هنا لتنظيف الشاشة
+
   void _refreshScreen() => setState(() {});
 
   void _confirmAndCancelSession(Map<String, dynamic> session) {
@@ -34,7 +35,7 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: const Text('Cancel Session', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1B3B86))), 
+          title: const Text('Cancel Session', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1B3B86))),
           content: Text('Are you sure you want to cancel your session with ${session['doctorName']}?'),
           actions: [
             TextButton(
@@ -42,7 +43,7 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
               child: const Text('No', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1B3B86)), 
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1B3B86)),
               onPressed: () {
                 SessionManager.cancelSession(session['id']);
                 _refreshScreen();
@@ -70,7 +71,7 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
       ),
       child: const Column(
         children: [
-          Icon(Icons.event_busy_rounded, size: 32, color: Colors.grey), 
+          Icon(Icons.event_busy_rounded, size: 32, color: Colors.grey),
           SizedBox(height: 8),
           Text('No sessions found', style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.w600)),
         ],
@@ -93,50 +94,32 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    HomeHeader(
-                      user: patientUser,
-                      actions: [
-                        HeaderActionButton(
-                          icon: Icons.notifications_rounded,
-                          onTap: () {
-                            if (widget.onTabChanged != null) {
-                              widget.onTabChanged!(2); 
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                    Positioned(
-                      left: 0,
-                      top: 0,
-                      width: 54, 
-                      height: 54,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(27),
-                        onTap: () {
-                          if (widget.onTabChanged != null) {
-                            widget.onTabChanged!(1); 
-                          }
-                        },
-                        child: const SizedBox.expand(),
-                      ),
-                    ),
+                HomeHeader(
+                  user: patientUser,
+                  actions: [
+                    HeaderActionButton(
+                      icon: Icons.notifications_rounded,
+                      onTap: () {
+                        if (widget.onTabChanged != null) {
+                          widget.onTabChanged!(2);
+                        }
+                      },
+                    )
                   ],
                 ),
                 const SizedBox(height: 16),
                 CustomSearchField(
-                  hintText: 'Search a Therapist...', 
+                  hintText: 'Search a Therapist...',
                   readOnly: true,
                   enabledFocus: false,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen(role: UserRole.patient))); 
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen(role: UserRole.patient)));
                   },
                 ),
                 const SizedBox(height: 32),
-                const SectionHeader(title: 'Upcoming session:'), 
+                const SectionHeader(title: 'Upcoming session:'),
                 const SizedBox(height: 16),
+                
                 upcomingSession != null
                     ? CustomSessionCard(
                         doctorName: upcomingSession['doctorName'],
@@ -144,19 +127,9 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                         date: upcomingSession['date'],
                         time: upcomingSession['time'],
                         isConfirmed: upcomingSession['isConfirmed'],
-                        // ⚡ الكارت اللي فوق هيعرض أيقونة الفيديو الدائرية البيضاء
-                        onVideoTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const CallPage(
-                                callID: 'room_session_001', 
-                                userID: 'patient_esraa_123', 
-                                userName: 'Esraa',           
-                              ),
-                            ),
-                          );
-                        },
+                        // تمرير الـ ID مباشرة لأن الخدمة أصبحت تعمل في الخلفية
+                        inviteeID: 'therapist_doaa', 
+                        inviteeName: 'Doaa (Therapist)',
                         bottomActionRow: UpcomingActionRow(
                           onCancel: () => _confirmAndCancelSession(upcomingSession),
                           onReschedule: () {
@@ -168,19 +141,20 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                         },
                       )
                     : _buildEmptyStateWidget(),
+                
                 const SizedBox(height: 32),
-                const SectionHeader(title: 'Recommended Therapists:'), 
+                const SectionHeader(title: 'Recommended Therapists:'),
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 145,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
-                    children: [ 
+                    children: [
                       TherapistInfoCard(
-                        name: 'Dr.Reem Omar', 
-                        specialty: 'Psychotherapist', 
-                        rating: '4.8', 
+                        name: 'Dr.Reem Omar',
+                        specialty: 'Psychotherapist',
+                        rating: '4.8',
                         price: '10\$',
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (_) => const TherapistProfileScreen(name: 'Dr.Reem Omar', specialty: 'Psychotherapist', rating: '4.8')));
@@ -200,8 +174,8 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                 ),
                 const SizedBox(height: 32),
                 SectionHeader(
-                  title: 'My sessions:', 
-                  actionText: 'see All', 
+                  title: 'My sessions:',
+                  actionText: 'see All',
                   onActionTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => const MySessionsTabsScreen(initialTabIndex: 0))).then((_) => _refreshScreen());
                   },
@@ -225,22 +199,12 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                                   specialty: session['specialty'],
                                   date: session['date'],
                                   time: session['time'],
-                                  isConfirmed: true, 
-                                  statusText: 'Confirmed', 
+                                  isConfirmed: true,
+                                  statusText: 'Confirmed',
                                   statusColor: Colors.green,
-                                  // ⚡ تم التعديل هنا لـ onStartSessionTap عشان يظهر نص "Start Session" الأزرق
-                                  onStartSessionTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const CallPage(
-                                          callID: 'room_session_001',   
-                                          userID: 'patient_esraa_123', 
-                                          userName: 'Esraa',           
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                  // تمرير الـ ID مباشرة هنا أيضاً
+                                  inviteeID: 'therapist_doaa',
+                                  inviteeName: 'Doaa (Therapist)',
                                   bottomActionRow: UpcomingActionRow(
                                     onCancel: () => _confirmAndCancelSession(session),
                                     onReschedule: () {
@@ -258,7 +222,7 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                       )
                     : _buildEmptyStateWidget(),
                 const SizedBox(height: 32),
-                const SectionHeader(title: "Today's Tips For You:"), 
+                const SectionHeader(title: "Today's Tips For You:"),
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 110,
@@ -266,7 +230,7 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
                     children: const [
-                      TipCard(text: 'Healing Journey starts from a small step'), 
+                      TipCard(text: 'Healing Journey starts from a small step'),
                       TipCard(text: 'Small steps every day lead to big results'),
                     ],
                   ),
