@@ -12,48 +12,48 @@ import 'features/auth/controllers/auth_cubit.dart';
 import 'features/auth/services/auth_remote_data_source_impl.dart';
 import 'features/auth/services/auth_repository_impl.dart';
 
-void main() {
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-  providers: [
-
-    BlocProvider(
-      create: (_) => AuthCubit(
-        repository: AuthRepositoryImpl(
-          remoteDataSource:
-              AuthRemoteDataSourceImpl(),
+      providers: [
+        BlocProvider(
+          create: (_) => AuthCubit(
+            repository: AuthRepositoryImpl(
+              remoteDataSource: AuthRemoteDataSourceImpl(),
+            ),
+            storage: SecureStorageService(),
+          ),
         ),
-        storage: SecureStorageService(),
-      ),
-    ),
-
-    BlocProvider(
-      create: (_) => AdminCubit(
-        AdminRepositoryImpl(
-          AdminRemoteDataSourceImpl(),
+        BlocProvider(
+          create: (_) => AdminCubit(
+            AdminRepositoryImpl(
+              AdminRemoteDataSourceImpl(),
+            ),
+          ),
         ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        theme: AppTheme.lightTheme,
+        navigatorObservers: [
+          KeyboardDismissObserver(),
+          // ZegoUIKitPrebuiltCallInvitationService().navigatorObserver,
+        ],
+        home: const SplashScreen(), 
       ),
-    ),
-
-  ],
-
-  child: MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: AppTheme.lightTheme,
-    navigatorObservers: [
-      KeyboardDismissObserver(),
-    ],
-    home: SplashScreen(),
-  ),
-);
+    );
   }
 }
-

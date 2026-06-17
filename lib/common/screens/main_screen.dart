@@ -24,7 +24,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
-
   late final List<Widget> tabs;
 
   @override
@@ -36,9 +35,10 @@ class _MainScreenState extends State<MainScreen> {
         : _therapistTabs();
   }
 
+  // ✅ تم تنظيف التابات وإزالة الباراميتر المسبب للخطأ
   List<Widget> _patientTabs() {
     return const [
-      PatientHomeTab(),
+      PatientHomeTab(), 
       PatientProfileTab(),
       PatientNotificationTab(),
       PatientChatTab(),

@@ -4,7 +4,7 @@ class FilePickerHelper {
   /// Allows the user to pick a licence file (jpg, jpeg, png, pdf).
   /// Returns the selected [fp.PlatformFile], or null if cancelled.
   static Future<fp.PlatformFile?> pickLicence() async {
-    final fp.FilePickerResult? result = await fp.FilePicker.pickFiles(
+    final fp.FilePickerResult? result = await fp.FilePicker.platform.pickFiles(
       type: fp.FileType.custom,
       allowedExtensions: ['jpg', 'jpeg', 'png'],
       allowMultiple: false,
@@ -20,7 +20,7 @@ class FilePickerHelper {
   /// Profile image
   static Future<fp.PlatformFile?> pickProfileImage() async {
     final result =
-        await fp.FilePicker.pickFiles(
+        await fp.FilePicker.platform.pickFiles(
       type: fp.FileType.custom,
       allowedExtensions: [
         'jpg',
