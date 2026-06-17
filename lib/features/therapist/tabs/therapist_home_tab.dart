@@ -5,8 +5,8 @@ import '../../../common/helpers/current_user.dart';
 import '../../../common/widgets/custom_search_field.dart';
 import '../../../common/widgets/header_action_button.dart';
 import '../../../common/widgets/home_header.dart';
-// استدعاء ملف الكارد الجديد (تأكدي من صحة المسار حسب مكان حفظك للملف)
 import '../../../features/therapist/widgets/therapist_upcoming_session_widget.dart'; 
+import '../screens/choose_availability_screen.dart';
 
 class TherapistHomeTab extends StatefulWidget {
   const TherapistHomeTab({super.key});
@@ -16,8 +16,6 @@ class TherapistHomeTab extends StatefulWidget {
 }
 
 class _TherapistHomeTabState extends State<TherapistHomeTab> {
-  // تم إزالة كل ما يخص Zego من هنا لتنظيف الشاشة
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +28,15 @@ class _TherapistHomeTabState extends State<TherapistHomeTab> {
               HomeHeader(
                 user: therapistUser,
                 actions: [
-                  HeaderActionButton(icon: Icons.calendar_month_rounded, onTap: () {}),
+                  HeaderActionButton(
+                    icon: Icons.calendar_month_rounded,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChooseAvailabilityScreen()),
+                      );
+                    },
+                  ),
                   const SizedBox(width: 10),
                   HeaderActionButton(icon: Icons.notifications_rounded, onTap: () {}),
                 ],

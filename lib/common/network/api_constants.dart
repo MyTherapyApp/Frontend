@@ -37,6 +37,20 @@ class ApiConstants {
   static const String uploadLicense =
       '/api/profile/upload-license';
 
+    static const String uploadPicture =
+    '/api/profile/upload-picture';
+
       static const String verificationStatus =
       '/api/profile/verification-status';
+
+      //Therapist Availability
+      static const String therapistAvailabilityMy =
+    '/api/therapist/availability/my';
+
+    static const String therapistAvailability =
+    '/api/therapist/availability';
+
+  static String deleteAvailability(
+  String slotId,) =>
+    '/api/therapist/availability/$slotId';
 }
