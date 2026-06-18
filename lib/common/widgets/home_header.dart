@@ -30,7 +30,7 @@ class HomeHeader extends StatelessWidget {
         /// Welcome Text
         Expanded(
           child: Text(
-            'Welcome ${user.displayName}!',
+            'Hello ${user.displayName}!',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

@@ -2,7 +2,7 @@ import '../enums/user_role.dart';
 import '../models/user_ui_model.dart';
 
 UserUIModel therapistUser = const UserUIModel(
-  name: 'Duaa Magdy',
+  name: 'Doctor',
 
   role: UserRole.therapist,
 
@@ -11,7 +11,7 @@ UserUIModel therapistUser = const UserUIModel(
 );
 
 UserUIModel patientUser = const UserUIModel(
-  name: 'Menna Mohamed',
+  name: '',
 
   role: UserRole.patient,
 

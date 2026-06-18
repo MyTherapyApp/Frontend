@@ -5,12 +5,14 @@ class TherapistProfileScreen extends StatelessWidget {
   final String name;
   final String specialty;
   final String rating;
+  final String imageId;
 
   const TherapistProfileScreen({
     super.key,
     required this.name,
     required this.specialty,
     required this.rating,
+    required this.imageId,
   });
 
   @override
@@ -47,8 +49,8 @@ class TherapistProfileScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 color: Colors.grey[200],
-                image: const DecorationImage(
-                  image: NetworkImage('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600'),
+                image: DecorationImage(
+                  image: NetworkImage('https://picsum.photos/id/$imageId/600/400',),
                   fit: BoxFit.cover,
                 ),
               ),

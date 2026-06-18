@@ -53,4 +53,17 @@ class ApiConstants {
   static String deleteAvailability(
   String slotId,) =>
     '/api/therapist/availability/$slotId';
+
+      // Users
+  static const String getPatients =
+      '/api/users/patients';
+
+  static const String getTherapists =
+      '/api/users/therapists';
+
+  static const String getPatientById =
+      '/api/users/patients';
+
+  static const String getTherapistById =
+      '/api/users/therapists';
 }

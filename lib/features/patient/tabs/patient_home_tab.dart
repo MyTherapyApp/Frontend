@@ -157,7 +157,7 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                         rating: '4.8',
                         price: '10\$',
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const TherapistProfileScreen(name: 'Dr.Reem Omar', specialty: 'Psychotherapist', rating: '4.8')));
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const TherapistProfileScreen(name: 'Dr.Reem Omar', specialty: 'Psychotherapist', rating: '4.8',imageId: '1005')));
                         },
                       ),
                       TherapistInfoCard(
@@ -166,7 +166,7 @@ class _PatientHomeTabState extends State<PatientHomeTab> {
                         rating: '4.9',
                         price: '15\$',
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const TherapistProfileScreen(name: 'Dr.Ali Omar', specialty: 'Psychotherapist', rating: '4.9')));
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const TherapistProfileScreen(name: 'Dr.Ali Omar', specialty: 'Psychotherapist', rating: '4.9',imageId: '1006')));
                         },
                       ),
                     ],
