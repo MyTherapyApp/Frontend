@@ -27,7 +27,7 @@ class UserUIModel {
 
   String get displayName {
   if (isTherapist) {
-    return 'Dr. $name';
+    return name;
   }
 
   return name;

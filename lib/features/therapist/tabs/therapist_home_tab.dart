@@ -5,7 +5,6 @@ import '../../../common/helpers/current_user.dart';
 import '../../../common/widgets/custom_search_field.dart';
 import '../../../common/widgets/header_action_button.dart';
 import '../../../common/widgets/home_header.dart';
-import '../../../features/therapist/widgets/therapist_upcoming_session_widget.dart'; 
 import '../screens/choose_availability_screen.dart';
 
 class TherapistHomeTab extends StatefulWidget {
