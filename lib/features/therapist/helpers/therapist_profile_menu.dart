@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_therapy/features/therapist/screens/earning_screen.dart';
 
 import '../../../common/enums/menu_item_type.dart';
 import '../../../common/models/profile_menu_item_model.dart';
+import '../screens/session_analysis_screen.dart';
 import '../screens/therapist_edit_profile_screen.dart';
 
 class TherapistProfileMenu {
@@ -21,12 +23,15 @@ class TherapistProfileMenu {
       ),
 
       ProfileMenuItemModel(
-        title: 'My All Sessions',
-        icon: Icons.calendar_month,
+        title: 'AI Reports',
+        icon: Icons.align_horizontal_left_rounded,
         type: MenuItemType.arrow,
 
         onTap: () {
-          // navigate to sessions screen
+          Navigator.push( context, MaterialPageRoute(
+          builder: (_) => const SessionAnalysisScreen(),
+        ),
+      );
         },
       ),
 
@@ -36,7 +41,10 @@ class TherapistProfileMenu {
         type: MenuItemType.arrow,
 
         onTap: () {
-          // navigate to earnings screen
+          Navigator.push( context, MaterialPageRoute(
+          builder: (_) => const EarningScreen(),
+        ),
+      );
         },
       ),
 

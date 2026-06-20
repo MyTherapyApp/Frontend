@@ -6,6 +6,9 @@ import '../../../common/widgets/custom_search_field.dart';
 import '../../../common/widgets/header_action_button.dart';
 import '../../../common/widgets/home_header.dart';
 import '../screens/choose_availability_screen.dart';
+import '../widgets/sessions_overview_section.dart';
+import '../widgets/therapist_upcoming_section.dart';
+import '../widgets/therapist_upcoming_session_widget.dart';
 
 class TherapistHomeTab extends StatefulWidget {
   const TherapistHomeTab({super.key});
@@ -50,6 +53,11 @@ class _TherapistHomeTabState extends State<TherapistHomeTab> {
                 },
               ),
               const SizedBox(height: 32),
+
+              const TherapistUpcomingSection(),
+              const SizedBox(height: 24),
+
+              const SessionsOverviewSection(),
               
               // const Text(
               //   'Next Session',
