@@ -13,25 +13,25 @@ class _EarningScreenState extends State<EarningScreen> {
   final int sessionPrice = 500;
 
   final List<Map<String, dynamic>> recentPayments = [
-    {
-      "patient": "menna abobazla",
-      "time": "3:10 PM",
-      "amount": 500,
-      "imageId": 1011,
-    },
-    {
-      "patient": "Sara Ahmed",
-      "time": "4:45 PM",
-      "amount": 500,
-      "imageId": 1027,
-    },
+    // {
+    //   "patient": "menna abobazla",
+    //   "time": "3:10 PM",
+    //   "amount": 500,
+    //   "imageId": 1011,
+    // },
+    // {
+    //   "patient": "Sara Ahmed",
+    //   "time": "4:45 PM",
+    //   "amount": 500,
+    //   "imageId": 1027,
+    // },
     
-    {
-      "patient": "Esraa Magdy",
-      "time": "12:30 PM",
-      "amount": 500,
-      "imageId": 1005,
-    },
+    // {
+    //   "patient": "Esraa Magdy",
+    //   "time": "12:30 PM",
+    //   "amount": 500,
+    //   "imageId": 1005,
+    // },
   ];
 
   @override
@@ -109,7 +109,7 @@ class _EarningScreenState extends State<EarningScreen> {
                 Expanded(
                   child: _StatCard(
                     title: "This Month",
-                    value: "1,500 EGP",
+                    value: "0 EGP",
                     icon: Icons.calendar_month,
                   ),
                 ),
@@ -117,7 +117,7 @@ class _EarningScreenState extends State<EarningScreen> {
                 Expanded(
                   child: _StatCard(
                     title: "Total Earnings",
-                    value: "1,500 EGP",
+                    value: "0 EGP",
                     icon: Icons.account_balance_wallet,
                   ),
                 ),

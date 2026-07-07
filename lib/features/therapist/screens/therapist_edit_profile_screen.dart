@@ -21,7 +21,9 @@ class TherapistEditProfileScreen extends StatefulWidget {
 class _TherapistEditProfileScreenState extends State<TherapistEditProfileScreen> {
 
 final ProfileServiceImpl _profileService = ProfileServiceImpl();
-String? imageUrl= 'https://i.pravatar.cc/300';
+// String? imageUrl= 'https://picsum.photos/id/152/200/300';
+String? imageUrl= '';
+
 bool isUploading = false;
 
 final fullNameController = TextEditingController();
@@ -198,37 +200,38 @@ experienceYearsController.dispose();
             CustomTextField(
               controller: fullNameController,
               title: 'Full Name',
-              hintText: 'Enter your full name',
+              hintText: 'Doaa Abdelhalim',
             ),
 
     const SizedBox(height: 16),
 
-//     CustomTextField(
-//   controller: emailController,
-//   title: 'Email',
-//   hintText: 'Enter your email',
-//   readOnly: true,
-//   keyboardType: TextInputType.emailAddress,
-// ),
+    CustomTextField(
+  controller: emailController,
+  title: 'Email',
+  hintText: 'doaamagdy150@gmail.com',
+  readOnly: true,
+  keyboardType: TextInputType.emailAddress,
+),
 
 const SizedBox(height: 16),
 
 CustomTextField(
   controller: phoneController,
   title: 'Phone Number',
-  hintText: 'Enter your phone number',
+  hintText: '01033881878',
+  readOnly: true,
   keyboardType: TextInputType.phone,
 ),
 
 const SizedBox(height: 16),
-const SizedBox(height: 16),
 
 CustomTextField(
+  readOnly: true,
   controller:
       specializationController,
   title: 'Specialization',
   hintText:
-      'Enter specialization',
+      'Mental Health',
 ),
 
 const SizedBox(height: 16),

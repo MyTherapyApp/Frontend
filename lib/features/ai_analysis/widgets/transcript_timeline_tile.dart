@@ -14,19 +14,34 @@ class TranscriptTimelineTile
     required this.index,
   });
 
-  Color _color() {
-    switch (
-        item.sentiment.toLowerCase()) {
-      case 'positive':
-        return Colors.green;
+  Color _sentimentColor() {
+  switch (item.sentiment.toLowerCase()) {
+    case 'positive':
+      return Colors.green;
 
-      case 'negative':
-        return Colors.red;
+    case 'negative':
+      return Colors.orange;
 
-      default:
-        return Colors.orange;
-    }
+    default:
+      return Colors.orange;
   }
+}
+
+Color _emotionColor() {
+  switch (item.emotion) {
+    case 'High_Intensity':
+      return Colors.blue;
+
+    case 'Low_Tired':
+      return Colors.red;
+
+    case 'Neutral':
+      return  Colors.yellow;
+
+    default:
+      return Colors.grey;
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +60,58 @@ class TranscriptTimelineTile
         title: Text(
           'Chunk ${index + 1}',
         ),
-        subtitle: Text(
-          '${item.emotion} • ${item.sentiment}',
-          style: TextStyle(
-            color: _color(),
-            fontWeight:
-                FontWeight.w600,
+        subtitle: Padding(
+  padding: const EdgeInsets.only(top: 8),
+  child: Wrap(
+    spacing: 8,
+    runSpacing: 8,
+    children: [
+      Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
+        ),
+        decoration: BoxDecoration(
+          color: _sentimentColor().withOpacity(.12),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: _sentimentColor(),
           ),
         ),
+        child: Text(
+          item.sentiment.toUpperCase(),
+          style: TextStyle(
+            color: _sentimentColor(),
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+        ),
+      ),
+
+      Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
+        ),
+        decoration: BoxDecoration(
+          color: _emotionColor().withOpacity(.12),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: _emotionColor(),
+          ),
+        ),
+        child: Text(
+          item.emotion,
+          style: TextStyle(
+            color: _emotionColor(),
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
         childrenPadding:
             const EdgeInsets.all(16),
         children: [

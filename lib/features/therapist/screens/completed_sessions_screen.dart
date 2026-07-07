@@ -58,22 +58,22 @@ class _CompletedSessionsScreenState
                       AppointmentStatus.done,
 
                   firstButtonText:
-                      "See Report",
-
-                  secondButtonText:
                       "Message",
 
+                  secondButtonText:
+                      "See Report",
+
                   onFirstPressed: () {
+                    
+                  },
+
+                  onSecondPressed: () {
                     Navigator.push(
                   context,
                   MaterialPageRoute(
                   builder: (_) => const SessionAnalysisScreen(),
               ),
                 );
-                  },
-
-                  onSecondPressed: () {
-                    // Open Notes Screen
                   },
                 );
               },

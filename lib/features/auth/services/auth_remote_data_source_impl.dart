@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:my_therapy/features/auth/models/auth_response_model.dart';
+import '../../../common/services/secure_storage_service.dart';
 import '../models/verification_status_model.dart';
 import '../../../common/exceptions/server_exception.dart';
 import '../../../common/network/api_constants.dart';
@@ -158,22 +159,55 @@ verifyEmail({
       message: 'Something went wrong',
     );
   }
-  @override
-Future<MessageResponseModel>
-uploadLicense({
+//   @override
+// Future<MessageResponseModel>
+// uploadLicense({
+//   required MultipartFile file,
+// }) async {
+//   try {
+//     final formData = FormData.fromMap({
+//       'file': file,
+//     });
+//     print('UPLOAD STARTED');
+
+//     final response = await DioClient.dio.post(
+//       ApiConstants.uploadLicense,
+//       data: formData,
+//     );
+// print('SUCCESS => ${response.data}');
+//     return MessageResponseModel.fromJson(
+//       response.data,
+//     );
+//   } on DioException catch (e) {
+//     print('STATUS => ${e.response?.statusCode}');
+//     print('DATA => ${e.response?.data}');
+//     print('ERROR => ${e.message}');
+
+//     _handleDioException(e);
+//   }
+// }
+@override
+Future<MessageResponseModel> uploadLicense({
   required MultipartFile file,
 }) async {
   try {
+    final storage = SecureStorageService();
+    final token = await storage.getToken();
+
     final formData = FormData.fromMap({
       'file': file,
     });
-    print('UPLOAD STARTED');
 
     final response = await DioClient.dio.post(
       ApiConstants.uploadLicense,
       data: formData,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      ),
     );
-print('SUCCESS => ${response.data}');
+
     return MessageResponseModel.fromJson(
       response.data,
     );
@@ -181,7 +215,6 @@ print('SUCCESS => ${response.data}');
     print('STATUS => ${e.response?.statusCode}');
     print('DATA => ${e.response?.data}');
     print('ERROR => ${e.message}');
-
     _handleDioException(e);
   }
 }

@@ -27,6 +27,13 @@ class ClinicalReportCard extends StatelessWidget {
       };
     }).toList();
   }
+  String _cleanContent(String text) {
+  return text
+      .replaceAll('**', '')
+      .replaceAll('- ', '• ')
+      .replaceAll('CBT', 'CBT (Cognitive Behavioral Therapy)')
+      .replaceAll('ERP', 'ERP (Exposure Response Prevention)');
+}
 
   @override
   Widget build(BuildContext context) {
@@ -51,21 +58,37 @@ class ClinicalReportCard extends StatelessWidget {
             crossAxisAlignment:
                 CrossAxisAlignment.start,
             children: [
-              Text(
-                section['title']!,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight:
-                      FontWeight.bold,
-                ),
-              ),
+              Container(
+  padding: const EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 8,
+  ),
+  decoration: BoxDecoration(
+    color: AppColors.primary.withOpacity(.08),
+    borderRadius: BorderRadius.circular(10),
+  ),
+  child: Text(
+    section['title']!,
+    style: const TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: AppColors.primary,
+    ),
+  ),
+),
               const SizedBox(height: 12),
-              Text(
-                section['content']!,
-                style: const TextStyle(
-                  height: 1.7,
-                ),
-              ),
+             Directionality(
+  textDirection: TextDirection.rtl,
+  child: Text(
+    _cleanContent(
+      section['content']!,
+    ),
+    style: const TextStyle(
+      height: 1.8,
+      fontSize: 15,
+    ),
+  ),
+)
             ],
           ),
         );
