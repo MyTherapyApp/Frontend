@@ -2,12 +2,12 @@ import '../enums/user_role.dart';
 import '../models/user_ui_model.dart';
 
 UserUIModel therapistUser = const UserUIModel(
-  name: 'Doctor',
+  name: 'Dr. Duaa Magdy',
 
   role: UserRole.therapist,
 
   imageUrl:
-      'https://i.pravatar.cc/300',
+      'https://picsum.photos/id/152/200/300',
 );
 
 UserUIModel patientUser = const UserUIModel(

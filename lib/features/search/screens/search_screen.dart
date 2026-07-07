@@ -36,6 +36,12 @@ class _SearchScreenState extends State<SearchScreen> {
   {'name': 'Omar Mahmoud','age': '30','status': 'Active','language': 'English','city': 'Alexandria','imageId': '140',},
   {'name': 'Esraa Mahmoud','age': '27','status': 'Active','language': 'English','city': 'Alexandria','imageId': '180',},
   {'name': 'Doaa Magdy','age': '22','status': 'Active','language': 'English','city': 'Fayoum','imageId': '200',},
+    {'name': 'menna abobazla','age': '21','status': 'Active','language': 'Arabic','city': 'Fayoum','imageId': '1011',},
+      {'name': 'Sara Ahmed','age': '25','status': 'Active','language': 'English','city': 'Fayoum','imageId': '1027',},
+        {'name': 'Esraa Magdy','age': '27','status': 'Active','language': 'English','city': 'Fayoum','imageId': '1005',},
+
+
+
 
 
 ];

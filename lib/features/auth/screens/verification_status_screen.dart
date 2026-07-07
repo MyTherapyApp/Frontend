@@ -7,6 +7,7 @@ import '../../../common/widgets/custom_appbar.dart';
 import '../../../common/widgets/primary_button.dart';
 import '../controllers/auth_cubit.dart';
 import '../controllers/auth_state.dart';
+import 'role_selection_screen.dart';
 import 'upload_license_screen.dart';
 
 class VerificationStatusScreen
@@ -85,11 +86,39 @@ class _VerificationStatusScreenState
           /// Pending
           if (state.status.isPending) {
             return Scaffold(
-              appBar: const CustomAppBar(
-                title:
-                    'Verification Status',
-                showBackArrow: false,
-              ),
+              // appBar: const CustomAppBar(
+              //   title:
+              //       'Verification Status',
+              //   showBackArrow: false,
+              // ),
+              appBar: AppBar(
+  title: const Text(
+    'Verification Status',
+  ),
+  centerTitle: true,
+  automaticallyImplyLeading: false,
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.logout),
+      onPressed: () async {
+        await context.read<AuthCubit>().logout();
+
+        if (!context.mounted) return;
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+                const RoleSelectionScreen(
+                  verifiedEmail: '',
+                ),
+          ),
+          (route) => false,
+        );
+      },
+    ),
+  ],
+),
               body: Padding(
                 padding:
                     const EdgeInsets.all(
